@@ -1,12 +1,13 @@
-export { escapeCloseModal, popupHandleOpener, popupHandleCloser}
+export { escapeCloseModal, openModal, closeModal, closePopupByClick}
 
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
 popupList.forEach((popup) => {
+  popup.addEventListener('click', closePopupByClick); 
   popup.addEventListener('mouseup', (event) => {
     const targetClassList = event.target.classList; 
     if (targetClassList.contains('popup') || targetClassList.contains('popup__close')) {
-      popupHandleCloser(popup); 
+      closeModal(popup); 
     }
   })
 }) 
@@ -23,7 +24,7 @@ function escapeCloseModal(evt) {
 
 // Открытие попапов
 
-function popupHandleOpener(popup) {
+function openModal(popup) {
   
   popup.classList.add("popup_is-opened");
 
@@ -32,8 +33,14 @@ function popupHandleOpener(popup) {
 
 // Закрытие  со снятием обработчиков
 
-function popupHandleCloser(popup) {
+function closeModal(popup) {
   popup.classList.remove("popup_is-opened");
   document.removeEventListener('keydown', escapeCloseModal);
+}
+
+const closePopupByClick = event=> {
+  if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) { 
+         closeModal(event.currentTarget); 
+     } 
 }
   

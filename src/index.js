@@ -1,16 +1,19 @@
 import "./pages/index.css";
 
 import {
-  initialCards,
+  initialCards
+} from "./components/cards.js"
+
+import {
   createCard,
   deleteCard,
   likeCard,
-} from "./components/cards.js";
+} from "./components/card.js";
 
 import {
   escapeCloseModal,
-  popupHandleOpener,
-  popupHandleCloser,
+  openModal,
+  closeModal,
 } from "./components/modal.js";
 
 const cardsContainer = document.querySelector(".places__list");
@@ -50,31 +53,30 @@ function addCard(card) {
 // Цикл, перебирающий массив карточек
 
 initialCards.forEach((card) => {
-  addCard(card, deleteCard);
+  addCard(card);
 });
 
 // Слушатели открытия модалок редактирования и добавления карточки
 
-addPopup.addEventListener("submit", () => popupHandleCloser(addPopup));
-addPopupButton.addEventListener("click", () => popupHandleOpener(addPopup));
+addPopupButton.addEventListener("click", () => openModal(addPopup));
 
-editPopup.addEventListener("submit", () => popupHandleCloser(editPopup));
+editPopup.addEventListener("submit", () => closeModal(editPopup));
 editPopupButton.addEventListener("click", () => {
-  popupHandleOpener(editPopup);
+  openModal(editPopup);
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
 });
 
 // Форма редактирования профиля
 
-function handleFormSubmit(evt) {
+function handleEditFormSubmit(evt) {
   evt.preventDefault();
 
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
 }
 
-editFormElement.addEventListener("submit", handleFormSubmit);
+editFormElement.addEventListener("submit", handleEditFormSubmit);
 
 // Форма добавления карточки
 
@@ -83,9 +85,10 @@ function handleAddSubmit(evt) {
 
   const newPlaceData = { name: placeName.value, link: placeLink.value };
 
-  addCard(newPlaceData, deleteCard);
+  addCard(newPlaceData);
 
   addFormElement.reset();
+  closeModal(addPopup);
 }
 
 addFormElement.addEventListener("submit", handleAddSubmit);
@@ -106,7 +109,6 @@ function imagePopupOpener(evt) {
   cardPopupImage.src = cardImage.src;
   cardPopupImage.alt = cardImage.alt;
 
-  popupHandleOpener(imagePopup);
+  openModal(imagePopup);
 
-  document.addEventListener("keydown", escapeCloseModal);
 }
