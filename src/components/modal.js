@@ -1,19 +1,6 @@
-export { escapeCloseModal, openModal, closeModal, closePopupByClick}
-
-const popupList = Array.from(document.querySelectorAll('.popup'));
-
-popupList.forEach((popup) => {
-  popup.addEventListener('click', closePopupByClick); 
-  popup.addEventListener('mouseup', (event) => {
-    const targetClassList = event.target.classList; 
-    if (targetClassList.contains('popup') || targetClassList.contains('popup__close')) {
-      closeModal(popup); 
-    }
-  })
-}) 
+export { openModal, closeModal, closePopupByClick}
 
 // Закрытие по клику на escape
-
 
 function escapeCloseModal(evt) {
   if (evt.code === "Escape") {

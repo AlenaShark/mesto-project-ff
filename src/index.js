@@ -11,9 +11,9 @@ import {
 } from "./components/card.js";
 
 import {
-  escapeCloseModal,
   openModal,
   closeModal,
+  closePopupByClick,
 } from "./components/modal.js";
 
 const cardsContainer = document.querySelector(".places__list");
@@ -60,7 +60,6 @@ initialCards.forEach((card) => {
 
 addPopupButton.addEventListener("click", () => openModal(addPopup));
 
-editPopup.addEventListener("submit", () => closeModal(editPopup));
 editPopupButton.addEventListener("click", () => {
   openModal(editPopup);
   nameInput.value = profileName.textContent;
@@ -74,6 +73,7 @@ function handleEditFormSubmit(evt) {
 
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
+  closeModal(editPopup)
 }
 
 editFormElement.addEventListener("submit", handleEditFormSubmit);
@@ -96,13 +96,6 @@ addFormElement.addEventListener("submit", handleAddSubmit);
 // Открытие попапа с картинкой
 
 function imagePopupOpener(evt) {
-  if (
-    evt.target.classList.contains("card__delete-button") ||
-    evt.target.classList.contains("card__like-button")
-  ) {
-    return;
-  }
-
   const card = evt.target.closest(".places__item");
   const cardImage = card.querySelector(".card__image");
 
@@ -112,3 +105,8 @@ function imagePopupOpener(evt) {
   openModal(imagePopup);
 
 }
+
+const popupList = Array.from(document.querySelectorAll('.popup')); 
+popupList.forEach((popup) => {
+    popup.addEventListener('click', closePopupByClick); 
+});
